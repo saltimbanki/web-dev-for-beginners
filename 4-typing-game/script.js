@@ -19,6 +19,8 @@ const messageElement = document.getElementById('message');
 const typedValueElement = document.getElementById('typed-value');
 
 document.getElementById('start').addEventListener('click', ()=>{
+    // habilitar el input
+    typedValueElement.disabled = false;
     // get a quote
     const quote= quotes[Math.floor(Math.random() * quotes.length)];
     // Put the quote into an array of words
@@ -61,7 +63,17 @@ typedValueElement.addEventListener('input', ()=>{
         // display success message
         const elapsedTyme = new Date().getTime() - startTime;
         const message = `Congratulations! You typed the sentence in ${elapsedTyme/1000} seconds.`;
-        messageElement.innerText = message;
+        // messageElement.innerText = message;
+        // modal con el mensaje
+        alert(message);
+
+        // remove event listener of the textbox
+        // typedValueElement.removeEventListener('input');
+        // clear the textbox
+        typedValueElement.value = '';
+        // disable the textbox
+        typedValueElement.disabled = true;
+
     }else if (typedValue.endsWith(' ')  && typedValue.trim() === currentWord){
         // end of word
         // clear the typedValueElement for the new word
