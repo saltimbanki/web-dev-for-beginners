@@ -18,11 +18,17 @@ const quoteElement = document.getElementById('quote');
 const messageElement = document.getElementById('message');
 const typedValueElement = document.getElementById('typed-value');
 
+//acceso al localstorage
+const miStorage = window.localStorage;
+
+let quoteLength = 0;
+
 document.getElementById('start').addEventListener('click', ()=>{
     // habilitar el input
     typedValueElement.disabled = false;
     // get a quote
     const quote= quotes[Math.floor(Math.random() * quotes.length)];
+    quoteLength = quote.length;
     // Put the quote into an array of words
     words = quote.split(' ');
     // reset the word index for tracking the current word
@@ -66,6 +72,11 @@ typedValueElement.addEventListener('input', ()=>{
         // messageElement.innerText = message;
         // modal con el mensaje
         alert(message);
+        
+        // calcular pulsaciones por minuto 
+        let pulsacionesPorMinuto = Math.round((60 * quoteLength) / (elapsedTyme/1000));
+        compararConMaximaPuntuacion(pulsacionesPorMinuto + ' pulsaciones por minuto');
+        actualizaPuntuaciones();
 
         // remove event listener of the textbox
         // typedValueElement.removeEventListener('input');
@@ -97,3 +108,14 @@ typedValueElement.addEventListener('input', ()=>{
     }
 
 });
+
+function compararConMaximaPuntuacion(puntuacionActual){
+    let maximaPuntuacion = miStorage.getItem('maximaPuntuacion');
+    
+        miStorage.setItem('maximaPuntuacion', puntuacionActual);
+}
+
+
+function actualizaPuntuaciones(){
+    document.getElementById('maximaPuntuacion').innerText = miStorage.getItem('maximaPuntuacion');
+}
