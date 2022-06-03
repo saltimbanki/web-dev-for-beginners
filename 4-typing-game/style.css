@@ -1,0 +1,26 @@
+.highlight{
+    background-color: yellow;
+}
+
+.error{
+    background-color: lightcoral;
+    border:red;
+}
+
+.container{
+    display: flex;
+
+}
+
+.game{
+    width: 80%;
+}
+
+.scoreboard{
+    width: 20%;
+}
+
+.center{
+    display:flex;
+    justify-content: center;
+}
