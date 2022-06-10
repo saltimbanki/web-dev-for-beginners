@@ -1,7 +1,7 @@
 const piezas = document.querySelectorAll(".contenedor__juego--juego-pieza");
 let array_piezas = Array.from(piezas);
 let posiciones = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
+let contadorPiezasCorrectas = 0;
 
 document
   .querySelector("#contenedor_juego--titulo-start")
@@ -10,7 +10,12 @@ document
     barajar();
   });
 
+function reiniciarContadorPiezasCorrectas() {
+  contadorPiezasCorrectas = 0;
+}
+
 function barajar() {
+  reiniciarContadorPiezasCorrectas();
   //barajar las piezas
   shuffle(posiciones);
 
@@ -25,16 +30,20 @@ function barajar() {
 
 function comprobarPosicion() {
   // recorrer las piezas y si estan en orden, añadir clase correcto
+
   for (let i = 0; i < piezas.length; i++) {
     //si data-order es igual a order añadir clase correcto
     if (piezas[i].dataset.pos == piezas[i].style.order) {
       piezas[i].classList.add("correcto");
+      contadorPiezasCorrectas++;
     } else {
       //eliminar clase correcto
       piezas[i].classList.remove("correcto");
     }
   }
 }
+
+function comprobarFinJuego() {}
 
 function shuffle(array) {
   //https://javascript.info/task/shuffle#:~:text=Write%20the%20function%20shuffle(array,%2C%202%5D%20%2F%2F%20...
@@ -46,20 +55,17 @@ function shuffle(array) {
 }
 
 document.addEventListener("keydown", function (e) {
-  
   //obtener el orden actual de la pieza 9
   let posActual = piezas[8].style.order;
 
   //detectar si se pulsa la tecla flecha derecha
   if (!e.repeat) {
-    // console.log(`Key "${e.key}" pressed [event: keydown]`);
 
     // debugger;
     switch (e.key) {
       case "ArrowRight":
-        console.log("derecha");
         //obtener order actual de la pieza 9
-        
+
         if (posActual != 1 && posActual != 4 && posActual != 7) {
           let posAnterior = parseInt(posActual) - 1;
           //obtener pieza de la izquierda
@@ -74,7 +80,6 @@ document.addEventListener("keydown", function (e) {
         }
         break;
       case "ArrowLeft":
-        console.log("izquierda", posActual);
         //obtener order actual de la pieza 9
         if (posActual != 3 && posActual != 6 && posActual != 9) {
           let posSiguiente = parseInt(posActual) + 1;
@@ -91,41 +96,40 @@ document.addEventListener("keydown", function (e) {
 
         break;
       case "ArrowDown":
-        console.log("abajo");
-            //obtener order actual de la pieza 9
-            if (posActual != 1 && posActual != 2 && posActual != 3) {
-                let posSiguiente = parseInt(posActual) - 3;
-                //obtener pieza de la derecha
-                let piezaInferior = document.querySelector(
-                  '.contenedor__juego--juego-pieza[style="order: ' +
-                    posSiguiente +
-                    ';"]'
-                );
-                //intercambiar los orders
-                piezas[8].style.order = posSiguiente;
-                piezaInferior.style.order = posActual;
-              }
+        //obtener order actual de la pieza 9
+        if (posActual != 1 && posActual != 2 && posActual != 3) {
+          let posSiguiente = parseInt(posActual) - 3;
+          //obtener pieza de la derecha
+          let piezaInferior = document.querySelector(
+            '.contenedor__juego--juego-pieza[style="order: ' +
+              posSiguiente +
+              ';"]'
+          );
+          //intercambiar los orders
+          piezas[8].style.order = posSiguiente;
+          piezaInferior.style.order = posActual;
+        }
         break;
       case "ArrowUp":
-        console.log("arriba");
-           //obtener order actual de la pieza 9
-           if (posActual != 7 && posActual != 8 && posActual != 9) {
-            let posSiguiente = parseInt(posActual) + 3;
-            //obtener pieza de la derecha
-            let piezaInferior = document.querySelector(
-              '.contenedor__juego--juego-pieza[style="order: ' +
-                posSiguiente +
-                ';"]'
-            );
-            //intercambiar los orders
-            piezas[8].style.order = posSiguiente;
-            piezaInferior.style.order = posActual;
-          }
+        //obtener order actual de la pieza 9
+        if (posActual != 7 && posActual != 8 && posActual != 9) {
+          let posSiguiente = parseInt(posActual) + 3;
+          //obtener pieza de la derecha
+          let piezaInferior = document.querySelector(
+            '.contenedor__juego--juego-pieza[style="order: ' +
+              posSiguiente +
+              ';"]'
+          );
+          //intercambiar los orders
+          piezas[8].style.order = posSiguiente;
+          piezaInferior.style.order = posActual;
+        }
         break;
 
       default:
-        console.log("otra tecla");
+        break;
     }
+    comprobarPosicion();
   } else {
     //   anulamos la repeticion
     // console.log(`Key "${e.key}" repeating [event: keydown]`);

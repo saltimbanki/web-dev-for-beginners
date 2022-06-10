@@ -13,18 +13,29 @@ body{
     width:80%;
     height:100%;
     background-color: aliceblue;
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 #contenedor_juego--titulo{
-    height: 10%;
+    /* height: 10%; */
     display:flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+
+    padding: 1rem;
     /* font-size: 2rem; */
 }
 #contenedor_juego--juego{
-    height: 80%;
+    height: 50vh;
+    width: 50vh;
+
     display: flex;
     flex-wrap:wrap;
+    
     background-color: gray;
 }
 #contenedor_juego--puntaje{
@@ -46,7 +57,7 @@ body{
 }
 
 .contenedor__juego--juego-pieza[data-pos="9"]{
-    background-color: transparent
+    background-color: transparent;
 }
 
 .correcto{
