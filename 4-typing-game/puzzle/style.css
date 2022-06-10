@@ -42,6 +42,7 @@ body{
     font-size: 2rem;
     background-color: white;
     filter:grayscale(60%);
+    /* transition:order .3s ease-in-out; */
 }
 
 .contenedor__juego--juego-pieza[data-pos="9"]{
@@ -51,4 +52,5 @@ body{
 .correcto{
     filter:none;
     outline:5px solid green;
+    background:rgba(0,255,0,0.1);
 }
