@@ -17,6 +17,8 @@ piezas.forEach(function (pieza) {
         //intercambiar el orden
         pieza.style.order = orderHueco;
         piezas[8].style.order = order;
+        //aumentar contador de movimientos
+        aumentarContadorMovimientos();
         //comprobar si la pieza esta en la posicion correcta
         comprobarPosicion();
     }
