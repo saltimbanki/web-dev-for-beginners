@@ -22,8 +22,6 @@ piezas.forEach(function (pieza) {
         //comprobar si la pieza esta en la posicion correcta
         comprobarPosicion();
     }
-
-
   });
 });
 
@@ -54,6 +52,7 @@ function barajar() {
 
 function comprobarPosicion() {
   // recorrer las piezas y si estan en orden, añadir clase correcto
+  reiniciarContadorPiezasCorrectas();
 
   for (let i = 0; i < piezas.length; i++) {
     //si data-order es igual a order añadir clase correcto
@@ -65,9 +64,11 @@ function comprobarPosicion() {
       piezas[i].classList.remove("correcto");
     }
   }
+  //comprobar si ganaste
+  comprobarFinJuego();
 }
 
-function comprobarFinJuego() {}
+
 
 function shuffle(array) {
   //https://javascript.info/task/shuffle#:~:text=Write%20the%20function%20shuffle(array,%2C%202%5D%20%2F%2F%20...
@@ -172,4 +173,12 @@ document.addEventListener("keydown", function (e) {
 function aumentarContadorMovimientos(){
     contadorMovimientos++;
     document.querySelector("#contenedor_juego--puntaje-puntaje").innerHTML = contadorMovimientos;
+}
+
+function comprobarFinJuego(){
+    if(contadorPiezasCorrectas == 9){
+        alert("Ganaste");
+    }else{
+        console.log('sigue jugando');
+    }
 }
