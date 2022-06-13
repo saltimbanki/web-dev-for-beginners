@@ -3,6 +3,27 @@ let array_piezas = Array.from(piezas);
 let posiciones = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 let contadorPiezasCorrectas = 0;
 
+
+//crear un event listener del click por cada pieza
+piezas.forEach(function (pieza) {
+  pieza.addEventListener("click", function () {
+
+    // obtener el order de la pieza
+    let order = pieza.style.order;
+    let orderHueco = parseInt(piezas[8].style.order); //convertimos a entero para que no haya confusion con la concatenacion mas adelante
+    //comprobar si las piezas son adyacentes para permitir cambiar el orden
+    if (order == orderHueco - 1 || order == orderHueco + 1 || order == orderHueco - 3 || order == orderHueco + 3) {
+        //intercambiar el orden
+        pieza.style.order = orderHueco;
+        piezas[8].style.order = order;
+        //comprobar si la pieza esta en la posicion correcta
+        comprobarPosicion();
+    }
+
+
+  });
+});
+
 document
   .querySelector("#contenedor_juego--titulo-start")
   .addEventListener("click", function () {
@@ -60,7 +81,6 @@ document.addEventListener("keydown", function (e) {
 
   //detectar si se pulsa la tecla flecha derecha
   if (!e.repeat) {
-
     // debugger;
     switch (e.key) {
       case "ArrowRight":
