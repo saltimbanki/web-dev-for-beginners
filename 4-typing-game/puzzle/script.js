@@ -2,6 +2,7 @@ const piezas = document.querySelectorAll(".contenedor__juego--juego-pieza");
 let array_piezas = Array.from(piezas);
 let posiciones = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 let contadorPiezasCorrectas = 0;
+let contadorMovimientos = 0;
 
 
 //crear un event listener del click por cada pieza
@@ -78,9 +79,11 @@ function shuffle(array) {
 document.addEventListener("keydown", function (e) {
   //obtener el orden actual de la pieza 9
   let posActual = piezas[8].style.order;
+  let movimientoPermitido = false;
 
   //detectar si se pulsa la tecla flecha derecha
   if (!e.repeat) {
+
     // debugger;
     switch (e.key) {
       case "ArrowRight":
@@ -97,6 +100,7 @@ document.addEventListener("keydown", function (e) {
           //intercambiar los orders
           piezas[8].style.order = posAnterior;
           piezaIzquierda.style.order = posActual;
+          movimientoPermitido = true;
         }
         break;
       case "ArrowLeft":
@@ -112,6 +116,7 @@ document.addEventListener("keydown", function (e) {
           //intercambiar los orders
           piezas[8].style.order = posSiguiente;
           piezaDerecha.style.order = posActual;
+          movimientoPermitido = true;
         }
 
         break;
@@ -128,6 +133,7 @@ document.addEventListener("keydown", function (e) {
           //intercambiar los orders
           piezas[8].style.order = posSiguiente;
           piezaInferior.style.order = posActual;
+          movimientoPermitido = true;
         }
         break;
       case "ArrowUp":
@@ -143,6 +149,7 @@ document.addEventListener("keydown", function (e) {
           //intercambiar los orders
           piezas[8].style.order = posSiguiente;
           piezaInferior.style.order = posActual;
+          movimientoPermitido = true;
         }
         break;
 
@@ -150,8 +157,17 @@ document.addEventListener("keydown", function (e) {
         break;
     }
     comprobarPosicion();
+    if(movimientoPermitido){
+        aumentarContadorMovimientos();
+    }
   } else {
     //   anulamos la repeticion
     // console.log(`Key "${e.key}" repeating [event: keydown]`);
   }
 });
+
+
+function aumentarContadorMovimientos(){
+    contadorMovimientos++;
+    document.querySelector("#contenedor_juego--puntaje-puntaje").innerHTML = contadorMovimientos;
+}
