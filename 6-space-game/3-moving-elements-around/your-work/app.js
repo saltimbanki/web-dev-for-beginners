@@ -1,3 +1,22 @@
+// VARIABLES Y CONSTANTES
+const Messages = {
+  KEY_EVENT_UP: "KEY_EVENT_UP",
+  KEY_EVENT_DOWN: "KEY_EVENT_DOWN",
+  KEY_EVENT_LEFT: "KEY_EVENT_LEFT",
+  KEY_EVENT_RIGHT: "KEY_EVENT_RIGHT",
+};
+
+let heroImg,
+  enemyImg,
+  laserImg,
+  canvas,
+  ctx,
+  gameObjects = [],
+  hero,
+  eventEmitter = new EventEmitter();
+
+// CLASES
+
 class GameObject {
   constructor(x, y) {
     this.x = x;
@@ -16,10 +35,10 @@ class GameObject {
 
 class Hero extends GameObject {
   constructor(x, y) {
-    super(x,y);
-    (this.width = 99),(this.height = 75);
+    super(x, y);
+    (this.width = 99), (this.height = 75);
     this.type = "Hero";
-    this.speed = {x:0, y:0};
+    this.speed = { x: 0, y: 0 };
   }
 }
 
@@ -58,21 +77,8 @@ class EventEmitter {
   }
 }
 
-const Messages = {
-  KEY_EVENT_UP: "KEY_EVENT_UP",
-  KEY_EVENT_DOWN: "KEY_EVENT_DOWN",
-  KEY_EVENT_LEFT: "KEY_EVENT_LEFT",
-  KEY_EVENT_RIGHT: "KEY_EVENT_RIGHT",
-};
 
-let heroImg,
-  enemyImg,
-  laserImg,
-  canvas,
-  ctx,
-  gameObjects = [],
-  hero,
-  eventEmitter = new EventEmitter();
+//FUNCIONES 
 
 function loadTexture(path) {
   return new Promise((resolve) => {
@@ -98,20 +104,42 @@ function createEnemies() {
     }
   }
 }
+
 function createHero() {
-  hero = new Hero(
-    canvas.width / 2 - 45,
-    canvas.height - canvas.height / 4
-  );
+  hero = new Hero(canvas.width / 2 - 45, canvas.height - canvas.height / 4);
   hero.img = heroImg;
   gameObjects.push(hero);
   console.log(hero);
 }
 
-function drawGameObjects(ctx){
-  gameObjects.forEach(go => go.draw(ctx));
+function drawGameObjects(ctx) {
+  gameObjects.forEach((go) => go.draw(ctx));
 }
 
+function initGame() {
+  gameObjects = [];
+  createEnemies();
+  createHero();
+
+  eventEmitter.on(Messages.KEY_EVENT_UP, () => {
+    hero.y -= 5;
+  });
+
+  eventEmitter.on(Messages.KEY_EVENT_DOWN, () => {
+    hero.y += 5;
+  });
+
+  eventEmitter.on(Messages.KEY_EVENT_LEFT, () => {
+    hero.x -= 5;
+  });
+
+  eventEmitter.on(Messages.KEY_EVENT_RIGHT, () => {
+    hero.x += 5;
+  });
+}
+
+
+// EVENTOS
 window.onload = async () => {
   canvas = document.getElementById("canvas");
   ctx = canvas.getContext("2d");
@@ -158,24 +186,3 @@ window.addEventListener("keyup", (evt) => {
   }
 });
 
-function initGame() {
-  gameObjects = [];
-  createEnemies();
-  createHero();
-
-  eventEmitter.on(Messages.KEY_EVENT_UP, () => {
-    hero.y -= 5;
-  });
-
-  eventEmitter.on(Messages.KEY_EVENT_DOWN, () => {
-    hero.y += 5;
-  });
-
-  eventEmitter.on(Messages.KEY_EVENT_LEFT, () => {
-    hero.x -= 5;
-  });
-
-  eventEmitter.on(Messages.KEY_EVENT_RIGHT, () => {
-    hero.x += 5;
-  });
-}
