@@ -18,6 +18,8 @@ window.onload = async () => {
   // TODO load textures
 
   // TODO draw black background
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0,0,canvas.width, canvas.height);
   // TODO draw hero
   // TODO uncomment the next line when you add enemies to screen
   //createEnemies(ctx, canvas, enemyImg);
