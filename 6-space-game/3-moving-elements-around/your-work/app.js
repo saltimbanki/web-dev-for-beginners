@@ -36,3 +36,21 @@ window.onload = async () => {
   );
   createEnemies(ctx, canvas, enemyImg);
 };
+
+let onKeyDown = function (e) {
+  //evitar que la pulsacion de las flechas active el scroll en pantalla
+  console.log(e.keyCode);
+  switch (e.keyCode) {
+    case 37:
+    case 39:
+    case 38:
+    case 40: // Arrow keys
+    case 32:
+      e.preventDefault();
+      break; // Space
+    default:
+      break; // do not block other keys
+  }
+};
+
+window.addEventListener('keydown', onKeyDown);
