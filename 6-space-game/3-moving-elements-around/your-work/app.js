@@ -17,11 +17,9 @@ class GameObject {
 class Hero extends GameObject {
   constructor(x, y) {
     super(x,y);
-    this.x = x;
-    this.y = y;
-    this.type = "hero";
-    this
-    this.speed = 1;
+    (this.width = 99),(this.height = 75);
+    this.type = "Hero";
+    this.speed = {x:0, y:0};
   }
 }
 
@@ -100,7 +98,6 @@ function createEnemies() {
     }
   }
 }
-
 function createHero() {
   hero = new Hero(
     canvas.width / 2 - 45,
@@ -108,6 +105,7 @@ function createHero() {
   );
   hero.img = heroImg;
   gameObjects.push(hero);
+  console.log(hero);
 }
 
 function drawGameObjects(ctx){
