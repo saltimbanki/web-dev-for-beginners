@@ -76,18 +76,27 @@ function initGame() {
 
 function spawnEnemies() {
   timeSpawn = 1000;
+  let centro = canvas.width/2 -25;
+  let separacion = 75;
   spawnPoints = [
-    canvas.width/2 - canvas.width/4 - 50,
-    canvas.width/2 - 50,
-    canvas.width/2 + canvas.width/4 - 50, 
+    centro -2*separacion,
+    centro -separacion,
+    centro ,
+    centro +separacion,
+    centro +2*separacion
+    
+    // 0,
+    // canvas.width/2 - 50,
+    // canvas.width/2 + canvas.width/4 - 50, 
     ];
-  let y = 50;
+  let y = 0;
   let x = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
   let id = setInterval(() => {
     // const enemy = new Enemy(POS_X_1, POS_Y);
     x = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
     const enemy = new Enemy(x, y);
     gameObjects.push(enemy);
+    
   }, timeSpawn);
 }
 
