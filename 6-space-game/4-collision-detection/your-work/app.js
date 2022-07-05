@@ -85,6 +85,12 @@ class Enemy extends GameObject {
       }
     }, 300);
   }
+  die(){
+    this.img = impactImg;
+    let id = setTimeout(()=>{
+      this.dead = true;
+    },200);
+  }
 }
 
 class Laser extends GameObject {
@@ -127,6 +133,7 @@ const Messages = {
 let heroImg,
   enemyImg,
   laserImg,
+  impactImg,
   canvas,
   ctx,
   gameObjects = [],
@@ -248,7 +255,8 @@ function initGame() {
   eventEmitter.on(Messages.COLLISION_ENEMY_LASER, (_, { first, second }) => {
     //en el impacto se eliminan los dos elementos
     first.dead = true;
-    second.dead = true;
+    // second.dead = true;
+    second.die();
   });
 }
 
@@ -258,6 +266,7 @@ window.onload = async () => {
   heroImg = await loadTexture("assets/player.png");
   enemyImg = await loadTexture("assets/enemyShip.png");
   laserImg = await loadTexture("assets/laserRed.png");
+  impactImg = await loadTexture("assets/laserRedShot.png");
 
   initGame();
   let gameLoopId = setInterval(() => {
