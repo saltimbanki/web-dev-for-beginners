@@ -11,6 +11,7 @@ body {
   height: 100vh;
   margin: 0;
   padding: 0;
+  
 }
 #app {
   display: flex;
@@ -81,8 +82,12 @@ body {
 
 .title_1{
     font-size: 3rem;
-    background: var(--bg2-gradient);
-  -webkit-background-clip: text;
-  color: transparent;
+    background: var(--card-gradient);
+    -webkit-background-clip: text;
+    color: transparent;
 
+}
+
+#loginError{
+    color:red;
 }
