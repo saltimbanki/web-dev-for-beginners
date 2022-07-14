@@ -16,8 +16,8 @@ class EventEmitter {
       this.listeners[message].forEach((l) => l(message, payload));
     }
   }
-  clear(){
-	this.listeners = {};
+  clear() {
+    this.listeners = {};
   }
 }
 
@@ -58,6 +58,8 @@ class Hero extends GameObject {
   }
   fire() {
     gameObjects.push(new Laser(this.x + 45, this.y - 10));
+	playLaser();
+
     this.cooldown = 500;
 
     let id = setInterval(() => {
@@ -145,49 +147,60 @@ function isEnemiesDead() {
 }
 
 function displayMessage(message, color = "red") {
-	ctx.font = "30px Arial";
-	ctx.fillStyle = color;
-	ctx.textAlign = "center";
-	ctx.fillText(message, canvas.width / 2, canvas.height / 2);
-  }
+  ctx.font = "30px Arial";
+  ctx.fillStyle = color;
+  ctx.textAlign = "center";
+  ctx.fillText(message, canvas.width / 2, canvas.height / 2);
+}
 
 function endGame(win) {
-	clearInterval(gameLoopId);
-  
-	// set a delay so we are sure any paints have finished
-	setTimeout(() => {
-	  ctx.clearRect(0, 0, canvas.width, canvas.height);
-	  ctx.fillStyle = "black";
-	  ctx.fillRect(0, 0, canvas.width, canvas.height);
-	  if (win) {
-		displayMessage(
-		  "Victory!!! Pew Pew... - Press [Enter] to start a new game Captain Pew Pew",
-		  "green"
-		);
-	  } else {
-		displayMessage(
-		  "You died !!! Press [Enter] to start a new game Captain Pew Pew"
-		);
-	  }
-	}, 200)  
-  }
+  clearInterval(gameLoopId);
 
-  function resetGame() {
-	if (gameLoopId) {
-	  clearInterval(gameLoopId);
-	  eventEmitter.clear();
-	  initGame();
-	  gameLoopId = setInterval(() => {
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		ctx.fillStyle = "black";
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		drawPoints();
-		drawLife();
-		updateGameObjects();
-		drawGameObjects(ctx);
-	  }, 100);
-	}
+  // set a delay so we are sure any paints have finished
+  setTimeout(() => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (win) {
+      displayMessage(
+        "Victory!!! Pew Pew... - Press [Enter] to start a new game Captain Pew Pew",
+        "green"
+      );
+    } else {
+      displayMessage(
+        "You died !!! Press [Enter] to start a new game Captain Pew Pew"
+      );
+    }
+  }, 200);
+}
+
+function resetGame() {
+  if (gameLoopId) {
+    clearInterval(gameLoopId);
+    eventEmitter.clear();
+    initGame();
+    gameLoopId = setInterval(() => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      drawPoints();
+      drawLife();
+      updateGameObjects();
+      drawGameObjects(ctx);
+    }, 100);
   }
+}
+
+function playLaser() {
+  audioLaser.play();
+}
+function playImpact() {
+  audioImpact.play();
+}
+
+function playNaveImpact(){
+	audioNaveImpact.play();
+}
 
 const Messages = {
   KEY_EVENT_UP: "KEY_EVENT_UP",
@@ -209,6 +222,9 @@ let heroImg,
   canvas,
   ctx,
   gameLoopId,
+  audioLaser,
+  audioImpact,
+  audioNaveImpact,
   gameObjects = [],
   hero,
   eventEmitter = new EventEmitter();
@@ -243,8 +259,7 @@ window.addEventListener("keyup", (evt) => {
     eventEmitter.emit(Messages.KEY_EVENT_RIGHT);
   } else if (evt.keyCode === 32) {
     eventEmitter.emit(Messages.KEY_EVENT_SPACE);
-  }
-  else if(evt.key === "Enter") {
+  } else if (evt.key === "Enter") {
     eventEmitter.emit(Messages.KEY_EVENT_ENTER);
   }
 });
@@ -331,6 +346,7 @@ function initGame() {
     first.dead = true;
     second.dead = true;
     hero.incrementPoints();
+	playImpact();
 
     //comprobar si los enemigos estan todos muertos
     if (isEnemiesDead()) {
@@ -341,6 +357,7 @@ function initGame() {
   eventEmitter.on(Messages.COLLISION_ENEMY_HERO, (_, { enemy }) => {
     enemy.dead = true;
     hero.decrementLife();
+	playNaveImpact();
 
     if (isHeroDead()) {
       eventEmitter.emit(Messages.GAME_END_LOSS);
@@ -360,7 +377,7 @@ function initGame() {
   });
 
   eventEmitter.on(Messages.KEY_EVENT_ENTER, () => {
-	resetGame();
+    resetGame();
   });
 }
 
@@ -392,6 +409,9 @@ window.onload = async () => {
   enemyImg = await loadTexture("assets/enemyShip.png");
   laserImg = await loadTexture("assets/laserRed.png");
   lifeImg = await loadTexture("assets/life.png");
+  audioImpact = document.getElementById("laser_impacto");
+  audioLaser = document.getElementById("laser_disparo");
+  audioNaveImpact = document.getElementById("nave_impacto");
 
   initGame();
   gameLoopId = setInterval(() => {
