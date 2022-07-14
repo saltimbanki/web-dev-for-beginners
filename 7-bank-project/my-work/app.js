@@ -4,6 +4,7 @@ const routes = {
     templateId: "dashboard",
     title: "Dashboard",
     method: updateDashboard,
+    init: updateDashboard,
   },
   "/credits": { templateId: "credits", title: "Credits" },
 };
@@ -11,6 +12,7 @@ const routes = {
 let account = null;
 
 function updateRoute(templateId) {
+  // debugger;
   const path = window.location.pathname;
   const route = routes[path];
 
@@ -23,13 +25,14 @@ function updateRoute(templateId) {
   const view = template.content.cloneNode(true);
   const app = document.getElementById("app");
   document.title = route.title;
-  if (typeof route.method === 'function') {
-    // debugger;
-    route.method();
-    
-  }
+  
   app.innerHTML = "";
   app.appendChild(view);
+  if (typeof route.init === 'function') {
+    // debugger;
+    route.init();
+    
+  }
 }
 
 function navigate(path) {
@@ -106,7 +109,8 @@ function updateDashboard() {
   if (!account) {
     return navigate("/login");
   }
-  updateElement("description", account.description);
+  // debugger;
+  updateElement("descripcion", account.description);
   updateElement("balance", account.balance.toFixed(2));
   updateElement("currency", account.currency);
 }
